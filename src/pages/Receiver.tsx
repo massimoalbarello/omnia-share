@@ -7,10 +7,10 @@ export interface IReceiverPageProps {};
 const ReceiverPage: React.FunctionComponent<IReceiverPageProps> = (props) => {
     useEffect(() => {
         const peer: Peer = new Peer("receiver", {
-            host: 'localhost',
-            port: 9000,
-            path: '/myapp'
-          });
+            host: "omnia-share.oa.r.appspot.com",
+            port: 80,
+            path: "/omnia-share"
+        });
         peer.on('open', function(id) {
             console.log('My peer ID is: ' + id);
         });
