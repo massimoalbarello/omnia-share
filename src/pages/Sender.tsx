@@ -34,7 +34,7 @@ const SenderPage: React.FunctionComponent<ISenderPageProps> = (props) => {
 
                 console.log("MediaStream", stream);
     
-                const mediaConn = senderPeer.call('receiver', stream);
+                const mediaConn = senderPeer.call(res.text, stream);
     
                 mediaConn.on('error', console.log);
             }
