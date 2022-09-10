@@ -61,8 +61,8 @@ const ReceiverPage: React.FunctionComponent<IReceiverPageProps> = (props) => {
 
     }, []);
     return (
-        <div>
-            <p>Receiver</p>
+        <div className="w-full bg-white p-4">
+            <p className="text-black">Receiver</p>
 
             {(peerId && !isConnected) && <QRCodeCanvas value={peerId} size={256} />}
 
