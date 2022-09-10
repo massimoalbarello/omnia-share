@@ -19,36 +19,46 @@ const ReceiverPage: React.FunctionComponent<IReceiverPageProps> = (props) => {
             setPeerId(id);
         });
 
-        peer.on("connection", (conn) => {
+        peer.on("connection", (dataConnection) => {
             setIsConnected(true);
-            
-            console.log("Connected");
 
-            conn.on("data", (data) => {
+            dataConnection.on("data", (data) => {
                 console.log(data);
             });
 
-            conn.on("open", () => {
-                conn.send("hello!");
+            dataConnection.on("open", () => {
+                console.log("Connected to sender");
+                dataConnection.send("Pong");
+            });
+
+            dataConnection.on("close", () => {
+                backToHomePage();
+                console.log("Data connection closed");
             });
         });
 
-        peer.on("call", (call) => {
+        peer.on("call", (mediaConnection) => {
 
-            console.log("received call");
+            console.log("Received call");
+            mediaConnection.answer();
 
-            call.answer();
-
-            call.on('stream', (remoteStream) => {
-
-                console.log("received stream", remoteStream);
-
+            mediaConnection.on('stream', (remoteStream) => {
+                console.log("Received remote stream");
                 if (videoRef?.current) {
                     videoRef.current.srcObject = remoteStream;
                 }
+            });
 
+            mediaConnection.on("close", () => {
+                backToHomePage();
+                console.log("Media connection closed");
             });
         });
+
+        function backToHomePage() {
+            setIsConnected(false);
+        }
+
     }, []);
     return (
         <div>
