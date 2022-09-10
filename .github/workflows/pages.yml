@@ -31,7 +31,7 @@ jobs:
         with:
           node-version: latest
       - name: Install required NPM packages
-        run: npm ci
+        run: npm install
       - name: Build react project
         run: npm run build
   # Single deploy job since we're just deploying
