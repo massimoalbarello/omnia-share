@@ -1,0 +1,7 @@
+.omnia-bg-image-container {
+  background-image: url('../assets/images/icon.png');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: -50% 50%;
+  background-size: auto 100%;
+}
