@@ -6,30 +6,37 @@ import { QRCodeCanvas } from "qrcode.react";
 const ReceiverPage = () => {
   const [receiverPeer, setReceiverPeer] = useState<Peer>(new Peer());
   const [isConnected, setIsConnected] = useState(false);
-  const videoRef = useRef<any>();
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-  const initDataConnection = useCallback((dataConnection: DataConnection) => {
-    dataConnection.on("open", () => {
-      console.log("Established data connection");
-      dataConnection.send("Pong");
-    });
-
-    dataConnection.on("data", (data) => {
-      console.log(data);
-    });
-
-    dataConnection.on("error", (error) => {
-      backToHomePage();
-      console.log("Data connection error: ", error);
-    });
-
-    dataConnection.on("close", () => {
-      backToHomePage();
-      console.log("Data connection closed");
-    });
-
-    setIsConnected(true);
+  const backToHomePage = useCallback(() => {
+    setIsConnected(false);
   }, []);
+
+  const initDataConnection = useCallback(
+    (dataConnection: DataConnection) => {
+      dataConnection.on("open", () => {
+        console.log("Established data connection");
+        dataConnection.send("Pong");
+      });
+
+      dataConnection.on("data", (data) => {
+        console.log(data);
+      });
+
+      dataConnection.on("error", (error) => {
+        backToHomePage();
+        console.log("Data connection error: ", error);
+      });
+
+      dataConnection.on("close", () => {
+        backToHomePage();
+        console.log("Data connection closed");
+      });
+
+      setIsConnected(true);
+    },
+    [backToHomePage]
+  );
 
   const initMediaConnection = useCallback(
     (mediaConnection: MediaConnection) => {
@@ -52,7 +59,7 @@ const ReceiverPage = () => {
         console.log("Media connection closed");
       });
     },
-    []
+    [videoRef, backToHomePage]
   );
 
   useEffect(() => {
@@ -86,11 +93,7 @@ const ReceiverPage = () => {
       // initialize new peer
       setReceiverPeer(new Peer());
     });
-  }, [receiverPeer, initDataConnection, initMediaConnection]);
-
-  const backToHomePage = useCallback(() => {
-    setIsConnected(false);
-  }, []);
+  }, [receiverPeer, initDataConnection, initMediaConnection, backToHomePage]);
 
   return (
     <div className="w-full bg-white p-4">
