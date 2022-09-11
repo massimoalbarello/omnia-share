@@ -97,7 +97,7 @@ const SenderPage = () => {
         await initMediaConnection(remotePeerId);
       }
     },
-    [isScanCompleted, senderPeer, initDataConnection, initMediaConnection]
+    [isScanCompleted, initDataConnection, initMediaConnection]
   );
 
   const handleError = (error: Error) => {

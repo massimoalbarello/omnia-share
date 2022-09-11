@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Peer, DataConnection, MediaConnection } from "peerjs";
 import { QRCodeCanvas } from "qrcode.react";
@@ -8,7 +8,7 @@ const ReceiverPage = () => {
   const [isConnected, setIsConnected] = useState(false);
   const videoRef = useRef<any>();
 
-  const initDataConnection = (dataConnection: DataConnection) => {
+  const initDataConnection = useCallback((dataConnection: DataConnection) => {
     dataConnection.on("open", () => {
       console.log("Established data connection");
       dataConnection.send("Pong");
@@ -29,28 +29,31 @@ const ReceiverPage = () => {
     });
 
     setIsConnected(true);
-  };
+  }, []);
 
-  const initMediaConnection = (mediaConnection: MediaConnection) => {
-    mediaConnection.answer();
+  const initMediaConnection = useCallback(
+    (mediaConnection: MediaConnection) => {
+      mediaConnection.answer();
 
-    mediaConnection.on("stream", (remoteStream) => {
-      console.log("Received remote stream");
-      if (videoRef?.current) {
-        videoRef.current.srcObject = remoteStream;
-      }
-    });
+      mediaConnection.on("stream", (remoteStream) => {
+        console.log("Received remote stream");
+        if (videoRef?.current) {
+          videoRef.current.srcObject = remoteStream;
+        }
+      });
 
-    mediaConnection.on("error", (error) => {
-      backToHomePage();
-      console.log("Media connection error: ", error);
-    });
+      mediaConnection.on("error", (error) => {
+        backToHomePage();
+        console.log("Media connection error: ", error);
+      });
 
-    mediaConnection.on("close", () => {
-      backToHomePage();
-      console.log("Media connection closed");
-    });
-  };
+      mediaConnection.on("close", () => {
+        backToHomePage();
+        console.log("Media connection closed");
+      });
+    },
+    []
+  );
 
   useEffect(() => {
     receiverPeer.on("open", function (id) {
