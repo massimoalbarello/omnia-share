@@ -36,25 +36,6 @@ const SenderPage = () => {
     });
   }, [senderPeer]);
 
-  const handleScan = useCallback(
-    async (res: { text: string }) => {
-      if (res && !isScanCompleted) {
-        const remotePeerId: string = res.text;
-        console.log("Peer receiver id: ", remotePeerId);
-        setIsScanCompleted(true);
-
-        initDataConnection(remotePeerId);
-
-        await initMediaConnection(remotePeerId);
-      }
-    },
-    [isScanCompleted, senderPeer]
-  );
-
-  const handleError = (error: Error) => {
-    console.log("Scan error", error);
-  };
-
   const initDataConnection = (remotePeerId: string) => {
     const dataConn = senderPeer.connect(remotePeerId);
 
@@ -102,6 +83,25 @@ const SenderPage = () => {
     });
 
     setMediaConnection(mediaConn);
+  };
+
+  const handleScan = useCallback(
+    async (res: { text: string }) => {
+      if (res && !isScanCompleted) {
+        const remotePeerId: string = res.text;
+        console.log("Peer receiver id: ", remotePeerId);
+        setIsScanCompleted(true);
+
+        initDataConnection(remotePeerId);
+
+        await initMediaConnection(remotePeerId);
+      }
+    },
+    [isScanCompleted, senderPeer, initDataConnection, initMediaConnection]
+  );
+
+  const handleError = (error: Error) => {
+    console.log("Scan error", error);
   };
 
   const stopSharing = () => {
