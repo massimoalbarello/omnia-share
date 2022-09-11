@@ -1,75 +1,49 @@
-import { useLayoutEffect, useRef, useState } from 'react';
-import { useMediaQuery } from 'react-responsive';
+import LoremIpsum from 'react-lorem-ipsum';
 import { Link, Route, Routes } from 'react-router-dom';
-import icon from '../assets/images/icon.png';
-import logo from '../assets/images/logo.png';
-import Apps from '../components/Apps/Apps';
+import Mirror from '../components/Apps/Mirror/Mirror';
+import Button from '../components/Button/Button';
 import Container from '../components/Container/Container';
 import Team from '../components/Team/Team';
 import { ROUTES } from '../constants/routes';
+import { getCommit, getVersion } from '../utils/utils';
+import SenderPage from './Sender';
 
 import './Home.css';
 
-const HomePage = () => {
-  const logoImgRef = useRef<HTMLImageElement>(null);
-  const [linksContainerHeight, setLinksContainerHeight] = useState(0);
-  const isLg = useMediaQuery({minWidth: 1024});
+const HomeContent = () => {
+  return (
+    <div>
+      <LoremIpsum random={false} p={2} />
+      <h2 className="mt-3 text-lg">These are the apps currently available:</h2>
+      <div className="w-full mt-6 text-center">
+        <Button className="">
+          <Link
+            to={ROUTES.MIRROR.path}
+          >
+            {ROUTES.MIRROR.name}
+          </Link>
+        </Button>
+      </div>
+      <div className="w-fit mx-auto text-center mt-6 py-1 px-2 bg-black text-gray-400 text-xs border border-gray-400 rounded relative z-20">
+        <p>{getVersion('Version:')}</p>
+        <p>{getCommit()}</p>
+      </div>
+    </div>
+  );
+};
 
-  useLayoutEffect(() => {
-    setLinksContainerHeight(logoImgRef?.current?.height || 0);
-  }, []);
+const HomePage = () => {
 
   return (
     <Container className="mt-2 lg:mt-8">
-      <img
-        src={icon}
-        className="opacity-30 absolute -bottom-0 z-0 hidden lg:block"
-        style={{
-          width: 'calc(83% / 2)',
-          minWidth: 600,
-          height: 'auto',
-          left: '-5%'
-        }}
-        alt="icon"
-      />
-      <div className="flex flex-col lg:flex-row">
-        <div className="w-full xl:w-9/12">
-          <div
-            className="flex flex-row items-center justify-evenly underline my-3 lg:my-0 text-2xl lg:text-3xl"
-            style={isLg ? {
-              height: linksContainerHeight,
-            }: undefined}
-          >
-            <Link
-              to={ROUTES.APPS.path}
-              className=""
-            >
-              {ROUTES.APPS.name}
-            </Link>
-            <Link
-              to={ROUTES.TEAM.path}
-            >
-              {ROUTES.TEAM.name}
-            </Link>
-          </div>
-        </div>
-        <div className="w-full px-3">
-          <div className="w-full">
-            <img
-              ref={logoImgRef}
-              src={logo}
-              className="w-full"
-              alt="logo"
-            />
-          </div>
-          <div className="mt-6">
-            <Routes>
-              <Route path={ROUTES.APPS.path} element={<Apps />} />
-              <Route path={ROUTES.TEAM.path} element={<Team />} />
-            </Routes>
-          </div>
-        </div>
-      </div>
+      <Routes>
+        <Route path={ROUTES.HOME.path} element={<HomeContent />} />
+        {/* TODO: implement apps page */}
+        {/* <Route path={ROUTES.APPS.path} element={<Apps />} /> */}
+        <Route path={ROUTES.TEAM.path} element={<Team />} />
+        <Route path={ROUTES.MIRROR.path} element={<Mirror />} />
+        <Route path={ROUTES.MIRROR_SENDER.path} element={<SenderPage />} />
+      </Routes>
     </Container>
   );
 };

@@ -19,7 +19,7 @@ export const PARTICLES_OPTIONS: ParticlesProps['options'] = {
     },
     links: {
       color: "#ffffff",
-      distance: 150,
+      distance: 200,
       enable: true,
       opacity: 0.4,
       width: 1

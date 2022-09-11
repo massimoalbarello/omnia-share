@@ -1,19 +1,20 @@
-import React from 'react';
 import { Routes, Route, HashRouter } from 'react-router-dom';
+import { ROUTES } from './constants/routes';
 
-import SenderPage from './pages/Sender';
-import ReceiverPage from './pages/Receiver';
 import HomePage from './pages/Home';
+import ReceiverPage from './pages/Receiver';
+import { getCommit, getVersion } from './utils/utils';
 
-export interface IAppProps { }
+// log version and commit
+console.log(getVersion('VERSION:'));
+console.log(getCommit(true));
 
-const App: React.FunctionComponent<IAppProps> = (props) => {
+const App = () => {
   return (
     <HashRouter>
       <Routes>
         <Route path="/*" element={<HomePage />} />
-        <Route path='/sender' element={<SenderPage />} />
-        <Route path='/receiver' element={<ReceiverPage />} />
+        <Route path={ROUTES.MIRROR_RECEIVER.path} element={<ReceiverPage />} />
       </Routes>
     </HashRouter>
   );

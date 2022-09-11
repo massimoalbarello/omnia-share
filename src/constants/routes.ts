@@ -11,4 +11,16 @@ export const ROUTES = {
     path: '/team',
     name: 'Team',
   },
+  MIRROR: {
+    path: '/mirror',
+    name: 'Mirror',
+  },
+  MIRROR_SENDER: {
+    path: '/mirror/sender',
+    name: 'Sender',
+  },
+  MIRROR_RECEIVER: {
+    path: '/mirror/receiver',
+    name: 'Receiver',
+  },
 };

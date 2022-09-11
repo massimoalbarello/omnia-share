@@ -1,13 +1,16 @@
 import { useCallback, useEffect, useState } from "react";
 import { Peer, DataConnection, MediaConnection } from "peerjs";
 import QrReader from "react-qr-scanner";
+import Button from "../components/Button/Button";
 
 const SenderPage = () => {
   const [senderPeer, setSenderPeer] = useState<Peer>(new Peer());
+  const [senderPeerId, setSenderPeerId] = useState('');
   const [isScanCompleted, setIsScanCompleted] = useState(false);
   const [isSharing, setIsSharing] = useState(false);
   const [dataConnection, setDataConnection] = useState<DataConnection>();
   const [mediaConnection, setMediaConnection] = useState<MediaConnection>();
+  const [isScannerEnabled, setIsScannerEnabled] = useState(false);
 
   const backToHomePage = useCallback(() => {
     setIsSharing(false);
@@ -96,9 +99,14 @@ const SenderPage = () => {
     }
   };
 
+  const toggleScanner = () => {
+    setIsScannerEnabled(prev => !prev);
+  };
+
   useEffect(() => {
     senderPeer.on("open", (id) => {
       console.log("Connected to signaling server. My peer ID is: " + id);
+      setSenderPeerId(id);
     });
 
     senderPeer.on("connection", () => {
@@ -124,12 +132,45 @@ const SenderPage = () => {
   }, [senderPeer, backToHomePage]);
 
   return (
-    <div>
-      <p>Sender</p>
-      {!isScanCompleted && (
-        <QrReader onError={handleError} onScan={handleScan} />
-      )}
-      {isSharing && <button onClick={stopSharing}>Stop sharing</button>}
+    <div className="text-center relative p-3 z-20 bg-black border border-white rounded">
+      <h1 className="text-2xl font-bold">Sender</h1>
+      <h2 className="text-xs">ID: {senderPeerId}</h2>
+      {isSharing
+        ? (
+          <Button
+            className="mt-3"
+            onClick={stopSharing}
+          >
+            Stop sharing
+          </Button>
+        )
+        : <div>
+          {isScannerEnabled && !isScanCompleted && (
+            <QrReader
+              onError={handleError}
+              onScan={handleScan}
+              style={{
+                minWidth: '95%',
+                height: 'auto',
+                maxHeight: 400,
+                marginTop: 20,
+                marginRight: 'auto',
+                marginBottom: 20,
+                marginLeft: 'auto',
+              }}
+            />
+          )}
+          <Button
+            className="mt-3"
+            onClick={toggleScanner}
+          >
+            {isScannerEnabled
+              ? 'Stop scanner'
+              : 'Scan receiver QR code'
+            }
+          </Button>
+        </div>
+      }
     </div>
   );
 };
