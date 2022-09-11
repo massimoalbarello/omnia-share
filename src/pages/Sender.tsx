@@ -36,7 +36,7 @@ const SenderPage = () => {
     });
   }, [senderPeer]);
 
-  const initDataConnection = (remotePeerId: string) => {
+  const initDataConnection = useCallback((remotePeerId: string) => {
     const dataConn = senderPeer.connect(remotePeerId);
 
     dataConn.on("open", () => {
@@ -59,9 +59,9 @@ const SenderPage = () => {
     });
 
     setDataConnection(dataConn);
-  };
+  }, []);
 
-  const initMediaConnection = async (remotePeerId: string) => {
+  const initMediaConnection = useCallback(async (remotePeerId: string) => {
     const stream = await navigator.mediaDevices.getDisplayMedia({
       video: true,
       audio: true,
@@ -83,7 +83,7 @@ const SenderPage = () => {
     });
 
     setMediaConnection(mediaConn);
-  };
+  }, []);
 
   const handleScan = useCallback(
     async (res: { text: string }) => {
@@ -112,10 +112,10 @@ const SenderPage = () => {
     }
   };
 
-  const backToHomePage = () => {
+  const backToHomePage = useCallback(() => {
     setIsSharing(false);
     setIsScanCompleted(false);
-  };
+  }, []);
 
   return (
     <div>

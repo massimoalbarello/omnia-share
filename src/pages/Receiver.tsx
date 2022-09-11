@@ -88,9 +88,9 @@ const ReceiverPage = () => {
     });
   }, [receiverPeer, initDataConnection, initMediaConnection]);
 
-  const backToHomePage = () => {
+  const backToHomePage = useCallback(() => {
     setIsConnected(false);
-  };
+  }, []);
 
   return (
     <div className="w-full bg-white p-4">
