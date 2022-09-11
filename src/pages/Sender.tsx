@@ -39,7 +39,7 @@ const SenderPage = () => {
 
       setDataConnection(dataConn);
     },
-    [backToHomePage]
+    [senderPeer, backToHomePage]
   );
 
   const initMediaConnection = useCallback(
