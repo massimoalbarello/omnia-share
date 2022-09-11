@@ -5,11 +5,12 @@ import { QRCodeCanvas } from "qrcode.react";
 
 const ReceiverPage = () => {
   const [receiverPeer, setReceiverPeer] = useState<Peer>(new Peer());
-  const [isConnected, setIsConnected] = useState(false);
+  const [isConnectedToSignalingServer, setIsConnectedToSignalingServer] = useState(false);
+  const [isConnectedToPeer, setIsConnectedToPeer] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const backToHomePage = useCallback(() => {
-    setIsConnected(false);
+    setIsConnectedToPeer(false);
   }, []);
 
   const initDataConnection = useCallback(
@@ -33,7 +34,7 @@ const ReceiverPage = () => {
         console.log("Data connection closed");
       });
 
-      setIsConnected(true);
+      setIsConnectedToPeer(true);
     },
     [backToHomePage]
   );
@@ -65,6 +66,7 @@ const ReceiverPage = () => {
   useEffect(() => {
     receiverPeer.on("open", function (id) {
       console.log("Connected to signaling server. My peer ID is: " + id);
+      setIsConnectedToSignalingServer(true);
     });
 
     receiverPeer.on("connection", (dataConnection) => {
@@ -90,6 +92,7 @@ const ReceiverPage = () => {
 
     receiverPeer.on("close", () => {
       console.log("Local peer destroyed");
+      setIsConnectedToSignalingServer(false);
       // initialize new peer
       setReceiverPeer(new Peer());
     });
@@ -99,11 +102,11 @@ const ReceiverPage = () => {
     <div className="w-full bg-white p-4">
       <p className="text-black">Receiver</p>
 
-      {receiverPeer.id && !isConnected && (
+      {isConnectedToSignalingServer && !isConnectedToPeer && (
         <QRCodeCanvas value={receiverPeer.id} size={256} />
       )}
 
-      {isConnected && (
+      {isConnectedToPeer && (
         <video ref={videoRef} autoPlay muted playsInline width="100%"></video>
       )}
     </div>
