@@ -1,98 +1,131 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Peer, DataConnection, MediaConnection } from 'peerjs';
-import QrReader from 'react-qr-scanner';
+import React, { useCallback, useEffect, useState } from "react";
+import { Peer, DataConnection, MediaConnection } from "peerjs";
+import QrReader from "react-qr-scanner";
 
-export interface ISenderPageProps { };
+const SenderPage = () => {
+  const [senderPeer, setSenderPeer] = useState<Peer>(new Peer());
+  const [isScanCompleted, setIsScanCompleted] = useState(false);
+  const [isSharing, setIsSharing] = useState(false);
+  const [dataConnection, setDataConnection] = useState<DataConnection>();
+  const [mediaConnection, setMediaConnection] = useState<MediaConnection>();
 
-const SenderPage: React.FunctionComponent<ISenderPageProps> = (props) => {
+  useEffect(() => {
+    senderPeer.on("open", (id) => {
+      console.log("Connected to signaling server. My peer ID is: " + id);
+    });
 
-    const [senderPeer, setSenderPeer] = useState<Peer>();
-    const [isScanCompleted, setIsScanCompleted] = useState(false);
-    const [dataConnection, setDataConnection] = useState<DataConnection>();
-    const [mediaConnection, setMediaConnection] = useState<MediaConnection>();
-    const [isSharing, setIsSharing] = useState(false);
+    senderPeer.on("connection", () => {
+      console.log("Connected to remote peer");
+    });
 
-    
-    useEffect(() => {
-        const peer: Peer = new Peer();
-        peer.on('open', async function (id) {
-            console.log('My peer ID is: ' + id);
-            setSenderPeer(peer);
-        });
-    }, []);
+    senderPeer.on("error", (error) => {
+      backToHomePage();
+      console.log("Peer error: ", error);
+    });
 
-    const handleScan = useCallback(async (res: {text: string}) => {
-        if (res && !isScanCompleted) {
-            console.log("Peer receiver id:", res);
-            setIsScanCompleted(true);
+    senderPeer.on("disconnected", () => {
+      console.log("Disconnected from signaling server");
+      // reconnect to signaling server in order to create new connections
+      senderPeer.reconnect();
+    });
 
-            if (senderPeer) {
-                const dataConn = senderPeer.connect(res.text);    
+    senderPeer.on("close", () => {
+      console.log("Local peer destroyed");
+      // initialize new peer
+      setSenderPeer(new Peer());
+    });
+  }, [senderPeer]);
 
-                dataConn.on("open", () => {
-                    console.log("Connected to receiver");
-                    dataConn.send("Ping");
-                });
+  const handleScan = useCallback(
+    async (res: { text: string }) => {
+      if (res && !isScanCompleted) {
+        const remotePeerId: string = res.text;
+        console.log("Peer receiver id: ", remotePeerId);
+        setIsScanCompleted(true);
 
-                dataConn.on("data", (data) => {
-                    console.log(data);
-                });
+        initDataConnection(remotePeerId);
 
-                dataConn.on("close", () => {
-                    backToHomePage();
-                    console.log("Data connection closed");
-                });
+        await initMediaConnection(remotePeerId);
+      }
+    },
+    [isScanCompleted, senderPeer]
+  );
 
-                setDataConnection(dataConn);
-    
-                const stream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true });
-                console.log("Captured media stream");
-    
-                const mediaConn = senderPeer.call(res.text, stream);
-                setIsSharing(true);
+  const handleError = (error: Error) => {
+    console.log("Scan error", error);
+  };
 
-                mediaConn.on("error", () => {
-                    backToHomePage();
-                    console.log("Media connection error");
-                })
+  const initDataConnection = (remotePeerId: string) => {
+    const dataConn = senderPeer.connect(remotePeerId);
 
-                mediaConn.on("close", () => {
-                    backToHomePage();
-                    console.log("Media connection closed");
-                });
+    dataConn.on("open", () => {
+      console.log("Established data connection");
+      dataConn.send("Ping");
+    });
 
-                setMediaConnection(mediaConn);          
-            }
-        }
-    }, [isScanCompleted, senderPeer]);
+    dataConn.on("data", (data) => {
+      console.log(data);
+    });
 
-    const handleError = (error: Error) => {
-        console.log("Scan error", error);
-    };
+    dataConn.on("error", (error) => {
+      backToHomePage();
+      console.log("Data connection error: ", error);
+    });
 
-    function stopSharing() {
-        if (dataConnection && mediaConnection) {
-            dataConnection.close();
-            mediaConnection.close();
-            console.log("Stopped sharing");
-        }
+    dataConn.on("close", () => {
+      backToHomePage();
+      console.log("Data connection closed");
+    });
+
+    setDataConnection(dataConn);
+  };
+
+  const initMediaConnection = async (remotePeerId: string) => {
+    const stream = await navigator.mediaDevices.getDisplayMedia({
+      video: true,
+      audio: true,
+    });
+    console.log("Captured media stream");
+
+    const mediaConn = senderPeer.call(remotePeerId, stream);
+    console.log("Established media connection");
+    setIsSharing(true);
+
+    mediaConn.on("error", (error) => {
+      backToHomePage();
+      console.log("Media connection error: ", error);
+    });
+
+    mediaConn.on("close", () => {
+      backToHomePage();
+      console.log("Media connection closed");
+    });
+
+    setMediaConnection(mediaConn);
+  };
+
+  const stopSharing = () => {
+    if (dataConnection && mediaConnection) {
+      dataConnection.close();
+      mediaConnection.close();
+      console.log("Stopped sharing");
     }
+  };
 
-    function backToHomePage() {
-        setIsSharing(false);
-        setIsScanCompleted(false);
-    }
+  const backToHomePage = () => {
+    setIsSharing(false);
+    setIsScanCompleted(false);
+  };
 
-    return (
-        <div>
-            <p>Sender</p>
-            {!isScanCompleted && <QrReader
-                onError={handleError}
-                onScan={handleScan}
-            />}
-            {isSharing && <button onClick={stopSharing}>Stop sharing</button>}
-        </div>
-    );
-}
+  return (
+    <div>
+      <p>Sender</p>
+      {!isScanCompleted && (
+        <QrReader onError={handleError} onScan={handleScan} />
+      )}
+      {isSharing && <button onClick={stopSharing}>Stop sharing</button>}
+    </div>
+  );
+};
 
 export default SenderPage;
