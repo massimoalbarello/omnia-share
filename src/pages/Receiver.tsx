@@ -8,39 +8,6 @@ const ReceiverPage = () => {
   const [isConnected, setIsConnected] = useState(false);
   const videoRef = useRef<any>();
 
-  useEffect(() => {
-    receiverPeer.on("open", function (id) {
-      console.log("Connected to signaling server. My peer ID is: " + id);
-    });
-
-    receiverPeer.on("connection", (dataConnection) => {
-      console.log("Received data connection");
-      initDataConnection(dataConnection);
-    });
-
-    receiverPeer.on("call", (mediaConnection) => {
-      console.log("Received media connection");
-      initMediaConnection(mediaConnection);
-    });
-
-    receiverPeer.on("error", (error) => {
-      backToHomePage();
-      console.log("Peer error: ", error);
-    });
-
-    receiverPeer.on("disconnected", () => {
-      console.log("Disconnected from signaling server");
-      // reconnect to signaling server in order to create new connections
-      receiverPeer.reconnect();
-    });
-
-    receiverPeer.on("close", () => {
-      console.log("Local peer destroyed");
-      // initialize new peer
-      setReceiverPeer(new Peer());
-    });
-  }, [receiverPeer]);
-
   const initDataConnection = (dataConnection: DataConnection) => {
     dataConnection.on("open", () => {
       console.log("Established data connection");
@@ -84,6 +51,39 @@ const ReceiverPage = () => {
       console.log("Media connection closed");
     });
   };
+
+  useEffect(() => {
+    receiverPeer.on("open", function (id) {
+      console.log("Connected to signaling server. My peer ID is: " + id);
+    });
+
+    receiverPeer.on("connection", (dataConnection) => {
+      console.log("Received data connection");
+      initDataConnection(dataConnection);
+    });
+
+    receiverPeer.on("call", (mediaConnection) => {
+      console.log("Received media connection");
+      initMediaConnection(mediaConnection);
+    });
+
+    receiverPeer.on("error", (error) => {
+      backToHomePage();
+      console.log("Peer error: ", error);
+    });
+
+    receiverPeer.on("disconnected", () => {
+      console.log("Disconnected from signaling server");
+      // reconnect to signaling server in order to create new connections
+      receiverPeer.reconnect();
+    });
+
+    receiverPeer.on("close", () => {
+      console.log("Local peer destroyed");
+      // initialize new peer
+      setReceiverPeer(new Peer());
+    });
+  }, [receiverPeer, initDataConnection, initMediaConnection]);
 
   const backToHomePage = () => {
     setIsConnected(false);
