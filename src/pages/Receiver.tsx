@@ -1,18 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Peer, DataConnection, MediaConnection } from "peerjs";
 import { QRCodeCanvas } from "qrcode.react";
 
 const ReceiverPage = () => {
   const [receiverPeer, setReceiverPeer] = useState<Peer>(new Peer());
-  const [receiverPeerId, setReceiverPeerId] = useState("");
   const [isConnected, setIsConnected] = useState(false);
   const videoRef = useRef<any>();
 
   useEffect(() => {
     receiverPeer.on("open", function (id) {
       console.log("Connected to signaling server. My peer ID is: " + id);
-      setReceiverPeerId(id);
     });
 
     receiverPeer.on("connection", (dataConnection) => {
@@ -41,7 +39,7 @@ const ReceiverPage = () => {
       // initialize new peer
       setReceiverPeer(new Peer());
     });
-  }, []);
+  }, [receiverPeer]);
 
   const initDataConnection = (dataConnection: DataConnection) => {
     dataConnection.on("open", () => {
@@ -95,8 +93,8 @@ const ReceiverPage = () => {
     <div className="w-full bg-white p-4">
       <p className="text-black">Receiver</p>
 
-      {receiverPeerId && !isConnected && (
-        <QRCodeCanvas value={receiverPeerId} size={256} />
+      {receiverPeer.id && !isConnected && (
+        <QRCodeCanvas value={receiverPeer.id} size={256} />
       )}
 
       {isConnected && (

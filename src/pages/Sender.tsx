@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Peer, DataConnection, MediaConnection } from "peerjs";
 import QrReader from "react-qr-scanner";
 
