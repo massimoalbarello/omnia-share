@@ -101,7 +101,15 @@ const ReceiverPage = () => {
 
   if (isConnectedToPeer) {
     return (
-      <video ref={videoRef} autoPlay muted playsInline width="100%" style={{ maxHeight: '100%' }}>
+      <video
+        ref={videoRef}
+        autoPlay
+        muted
+        playsInline
+        width="100%"
+        style={{ maxHeight: '100%' }}
+        className="absolute top-1/2 -translate-y-1/2"
+      >
         Waiting for Sender to start the stream...
       </video>
     );
