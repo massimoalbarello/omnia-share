@@ -15,6 +15,7 @@ const SenderPage = () => {
   const backToHomePage = useCallback(() => {
     setIsSharing(false);
     setIsScanCompleted(false);
+    setIsScannerEnabled(false);
   }, []);
 
   const initDataConnection = useCallback(
