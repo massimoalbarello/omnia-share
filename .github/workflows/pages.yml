@@ -39,7 +39,7 @@ jobs:
       - name: Build react project
         run: npm run build
         env:
-         COMMIT_HASH: ${{ github.sha }}
+         REACT_APP_COMMIT_HASH: ${{ github.sha }}
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - name: Upload artifact
