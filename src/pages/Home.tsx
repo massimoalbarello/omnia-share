@@ -13,6 +13,7 @@ import './Home.css';
 const HomeContent = () => {
   return (
     <div>
+      {/* TODO: insert real text */}
       <LoremIpsum random={false} p={2} />
       <h2 className="mt-3 text-lg">These are the apps currently available:</h2>
       <div className="w-full mt-6 text-center">

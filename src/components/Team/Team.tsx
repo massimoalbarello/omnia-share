@@ -5,6 +5,7 @@ const Team = () => {
   return (
     <div>
       <h1 className="text-2xl">Team</h1>
+      {/* TODO: insert real text */}
       <LoremIpsum avgSentencesPerParagraph={4} startWithLoremIpsum={false} random={false} />
       <div className="pt-3">
         <TeamMember name="Luca" />
