@@ -3,12 +3,15 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Peer, DataConnection, MediaConnection } from "peerjs";
 import { QRCodeCanvas } from "qrcode.react";
 import Container from "../components/Container/Container";
+import { useQueryParams } from "../hooks/useQueryParams";
 
 const ReceiverPage = () => {
   const [receiverPeer, setReceiverPeer] = useState<Peer>(new Peer());
   const [isConnectedToSignalingServer, setIsConnectedToSignalingServer] = useState(false);
   const [isConnectedToPeer, setIsConnectedToPeer] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const params = useQueryParams();
+  const qrSize = parseInt(params.get('qrSize') || '256');
 
   const backToHomePage = useCallback(() => {
     setIsConnectedToPeer(false);
@@ -125,7 +128,7 @@ const ReceiverPage = () => {
           <div className="w-full mx-auto mt-3 bg-white text-black p-6 rounded">
             <QRCodeCanvas
               value={receiverPeer.id}
-              size={600}
+              size={qrSize}
               className="mx-auto"
             />
             <h2 className="mt-3 font-bold text-2xl">Scan this QR code with Sender scanner</h2>
