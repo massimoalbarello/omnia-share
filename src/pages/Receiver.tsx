@@ -118,19 +118,17 @@ const ReceiverPage = () => {
   return (
     <Container className="mt-2 lg:mt-8">
       <div className="text-center relative p-3 z-20 bg-black border border-white rounded">
-        <h1 className="text-2xl font-bold">Receiver</h1>
+        <h1 className="text-3xl font-bold">Receiver</h1>
         {isConnectedToSignalingServer && <h2 className="text-xs">ID: {receiverPeer.id}</h2>}
 
         {isConnectedToSignalingServer && (
-          <div className="w-fit mx-auto mt-3 bg-white text-black p-4 rounded">
-            <div className="w-full">
-              <QRCodeCanvas
-                value={receiverPeer.id}
-                size={256}
-                className="mx-auto"
-              />
-            </div>
-            <h2 className="mt-3 font-bold text-xl">Scan this QR code with Sender scanner</h2>
+          <div className="w-full mx-auto mt-3 bg-white text-black p-6 rounded">
+            <QRCodeCanvas
+              value={receiverPeer.id}
+              size={600}
+              className="mx-auto"
+            />
+            <h2 className="mt-3 font-bold text-2xl">Scan this QR code with Sender scanner</h2>
           </div>
         )}
       </div>
