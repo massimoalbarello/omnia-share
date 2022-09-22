@@ -1,7 +1,7 @@
 import { ParticlesProps } from "react-tsparticles";
 
 export const PARTICLES_OPTIONS: ParticlesProps['options'] = {
-  fps_limit: 60,
+  fps_limit: 30,
   interactivity: {
     events: {
       onClick: {

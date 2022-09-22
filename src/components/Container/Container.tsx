@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 import type { Container as TSParticlesContainer, Engine } from "tsparticles-engine";
-import { PARTICLES_OPTIONS } from "../../constants/particles";
 import { ROUTES } from "../../constants/routes";
 import icon from '../../assets/images/icon.png';
 import logo from '../../assets/images/logo.png';
 import Menu from "../Menu/Menu";
+import { useParticlesOptions } from "../../hooks/useParticlesOptions";
 
 interface IProps {
   className: React.HTMLAttributes<HTMLDivElement>['className'];
@@ -15,6 +15,7 @@ interface IProps {
 };
 
 const Container: React.FC<IProps> = ({ className, children }) => {
+  const particlesOptions = useParticlesOptions();
 
   const particlesInit = useCallback(async (engine: Engine) => {
     console.log(engine);
@@ -35,7 +36,7 @@ const Container: React.FC<IProps> = ({ className, children }) => {
         id="tsparticles"
         init={particlesInit}
         loaded={particlesLoaded}
-        options={PARTICLES_OPTIONS}
+        options={particlesOptions}
       />
       <div className="z-1">
         <img
