@@ -1,4 +1,3 @@
-import LoremIpsum from "react-lorem-ipsum";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../../constants/routes";
 import { MIRROR_PARAGRAPHS } from "../../../constants/texts";
