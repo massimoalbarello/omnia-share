@@ -1,3 +1,5 @@
+export const PATH_REDIRECTION_ON_PHONE_SCAN = '/mirror/receiverId/';
+
 export const ROUTES = {
   HOME: {
     path: '/',
@@ -14,6 +16,10 @@ export const ROUTES = {
   MIRROR: {
     path: '/mirror',
     name: 'Mirror',
+  },
+  MIRROR_WITH_RECEIVER_ID: {
+    path: PATH_REDIRECTION_ON_PHONE_SCAN + '*',
+    name: 'Mirror'
   },
   MIRROR_SENDER: {
     path: '/mirror/sender',

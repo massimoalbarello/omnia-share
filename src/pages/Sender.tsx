@@ -2,10 +2,11 @@ import { useCallback, useEffect, useState } from "react";
 import { Peer, DataConnection, MediaConnection } from "peerjs";
 import QrReader from "react-qr-scanner";
 import Button from "../components/Button/Button";
+import { PATH_REDIRECTION_ON_PHONE_SCAN } from "../constants/routes";
 
 const SenderPage = () => {
   const [senderPeer, setSenderPeer] = useState<Peer>(new Peer());
-  const [senderPeerId, setSenderPeerId] = useState('');
+  const [senderPeerId, setSenderPeerId] = useState("");
   const [isScanCompleted, setIsScanCompleted] = useState(false);
   const [isSharing, setIsSharing] = useState(false);
   const [dataConnection, setDataConnection] = useState<DataConnection>();
@@ -76,7 +77,10 @@ const SenderPage = () => {
   const handleScan = useCallback(
     async (res: { text: string }) => {
       if (res && !isScanCompleted) {
-        const remotePeerId: string = res.text;
+        const pathOffset = PATH_REDIRECTION_ON_PHONE_SCAN.length;
+        const receiverIdStartIndex =
+          res.text.indexOf(PATH_REDIRECTION_ON_PHONE_SCAN) + pathOffset;
+        const remotePeerId: string = res.text.slice(receiverIdStartIndex);
         console.log("Peer receiver id: ", remotePeerId);
         setIsScanCompleted(true);
 
@@ -101,7 +105,7 @@ const SenderPage = () => {
   };
 
   const toggleScanner = () => {
-    setIsScannerEnabled(prev => !prev);
+    setIsScannerEnabled((prev) => !prev);
   };
 
   useEffect(() => {
@@ -136,42 +140,32 @@ const SenderPage = () => {
     <div className="text-center relative p-3 z-20 bg-black border border-white rounded">
       <h1 className="text-2xl font-bold">Sender</h1>
       <h2 className="text-xs">ID: {senderPeerId}</h2>
-      {isSharing
-        ? (
-          <Button
-            className="mt-3"
-            onClick={stopSharing}
-          >
-            Stop sharing
-          </Button>
-        )
-        : <div>
+      {isSharing ? (
+        <Button className="mt-3" onClick={stopSharing}>
+          Stop sharing
+        </Button>
+      ) : (
+        <div>
           {isScannerEnabled && !isScanCompleted && (
             <QrReader
               onError={handleError}
               onScan={handleScan}
               style={{
-                minWidth: '95%',
-                height: 'auto',
+                minWidth: "95%",
+                height: "auto",
                 maxHeight: 400,
                 marginTop: 20,
-                marginRight: 'auto',
+                marginRight: "auto",
                 marginBottom: 20,
-                marginLeft: 'auto',
+                marginLeft: "auto",
               }}
             />
           )}
-          <Button
-            className="mt-3"
-            onClick={toggleScanner}
-          >
-            {isScannerEnabled
-              ? 'Stop scanner'
-              : 'Scan receiver QR code'
-            }
+          <Button className="mt-3" onClick={toggleScanner}>
+            {isScannerEnabled ? "Stop scanner" : "Scan receiver QR code"}
           </Button>
         </div>
-      }
+      )}
     </div>
   );
 };
