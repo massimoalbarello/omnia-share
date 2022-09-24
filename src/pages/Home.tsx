@@ -1,10 +1,12 @@
 import LoremIpsum from "react-lorem-ipsum";
 import { Link, Route, Routes } from "react-router-dom";
 import Mirror from "../components/Apps/Mirror/Mirror";
+import Text from "../components/Text/Text";
 import Button from "../components/Button/Button";
 import Container from "../components/Container/Container";
 import Team from "../components/Team/Team";
 import { ROUTES } from "../constants/routes";
+import { HOME_PARAGRAPHS } from "../constants/texts";
 import { getCommit, getVersion } from "../utils/utils";
 import SenderPage from "./Sender";
 
@@ -13,13 +15,13 @@ import "./Home.css";
 const HomeContent = () => {
   return (
     <div>
-      {/* TODO: insert real text */}
-      <LoremIpsum random={false} p={2} />
-      <h2 className="mt-3 text-lg">These are the apps currently available:</h2>
-      <div className="w-full mt-6 text-center">
-        <Button className="">
-          <Link to={ROUTES.MIRROR.path}>{ROUTES.MIRROR.name}</Link>
-        </Button>
+      <div className="bg-black w-full p-3 z-20 relative border border-white rounded">
+        <Text paragraphs={HOME_PARAGRAPHS}></Text>
+        <div className="w-full mt-6 text-center">
+          <Button className="">
+            <Link to={ROUTES.MIRROR.path}>{ROUTES.MIRROR.name}</Link>
+          </Button>
+        </div>
       </div>
       <div className="w-fit mx-auto text-center mt-6 py-1 px-2 bg-black text-gray-400 text-xs border border-gray-400 rounded relative z-20">
         <p>{getVersion("Version:")}</p>
