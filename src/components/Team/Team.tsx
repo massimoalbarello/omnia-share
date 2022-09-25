@@ -5,7 +5,7 @@ import profile_max from "../../assets/images/profile_max.jpg";
 
 const Team = () => {
   return (
-    <div>
+    <div className="bg-black w-full p-3 z-20 relative border border-white rounded">
       <h1 className="text-2xl">Team</h1>
       <Text paragraphs={TEAM_PARAGRAPH}></Text>
       <div className="pt-3">
