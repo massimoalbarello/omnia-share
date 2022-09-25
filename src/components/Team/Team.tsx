@@ -1,15 +1,30 @@
-import LoremIpsum from "react-lorem-ipsum";
 import TeamMember from "./TeamMember";
+import { TEAM_PARAGRAPH } from "../../constants/texts";
+import Text from "../../components/Text/Text";
+import profile_max from "../../assets/images/profile_max.jpg";
 
 const Team = () => {
   return (
     <div>
       <h1 className="text-2xl">Team</h1>
-      {/* TODO: insert real text */}
-      <LoremIpsum avgSentencesPerParagraph={4} startWithLoremIpsum={false} random={false} />
+      <Text paragraphs={TEAM_PARAGRAPH}></Text>
       <div className="pt-3">
-        <TeamMember name="Luca" />
-        <TeamMember name="Massimo" />
+        <TeamMember
+          profilePic={profile_max}
+          name="Massimo Albarello"
+          github="massimoalbarello"
+          linkedin="massimo-albarello-62b3a714a"
+          twitter="@MaxAlbarello"
+          email="massimo00albarello@gmail.com"
+        />
+        <TeamMember
+          profilePic="https://robohash.org/Luca"
+          name="Luca Bertelli"
+          github=""
+          linkedin=""
+          twitter=""
+          email=""
+        />
       </div>
     </div>
   );
