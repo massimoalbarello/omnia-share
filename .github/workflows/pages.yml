@@ -40,6 +40,7 @@ jobs:
         run: npm run build
         env:
          REACT_APP_COMMIT_HASH: ${{ github.sha }}
+         PUBLIC_URL: https://omnia-iot.com
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - name: Upload artifact
