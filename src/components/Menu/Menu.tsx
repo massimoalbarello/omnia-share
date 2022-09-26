@@ -1,7 +1,6 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { ROUTES } from "../../constants/routes";
 import { useQueryParams } from "../../hooks/useQueryParams";
-import Button from "../Button/Button";
 
 const Menu = () => {
   const params = useQueryParams();
@@ -13,22 +12,24 @@ const Menu = () => {
 
   return (
     <div
-      className="flex flex-row items-center justify-evenly my-3 lg:my-0 text-2xl lg:text-3xl relative z-20"
+      className="flex flex-row items-center justify-evenly my-3 lg:my-0 text-xl lg:text-3xl relative z-20 uppercase"
     >
-      <Button className="">
-        <Link
-          to={ROUTES.HOME.path}
-        >
-          {ROUTES.HOME.name}
-        </Link>
-      </Button>
-      <Button className="">
-        <Link
-          to={ROUTES.TEAM.path}
-        >
-          {ROUTES.TEAM.name}
-        </Link>
-      </Button>
+      <NavLink
+        to={ROUTES.HOME.path}
+        className={({ isActive }) =>
+          isActive ? 'bg-black border-2 border-white border-solid px-2' : 'bg-white text-black px-2'
+        }
+      >
+        {ROUTES.HOME.name}
+      </NavLink>
+      <NavLink
+        to={ROUTES.TEAM.path}
+        className={({ isActive }) =>
+          isActive ? 'bg-black border-2 border-white border-solid px-2' : 'bg-white text-black px-2'
+        }
+      >
+        {ROUTES.TEAM.name}
+      </NavLink>
     </div>
   );
 };

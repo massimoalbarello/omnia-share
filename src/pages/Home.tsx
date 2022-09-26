@@ -1,6 +1,6 @@
 import { Link, Route, Routes } from "react-router-dom";
 import Mirror from "../components/Apps/Mirror/Mirror";
-import Text from "../components/Text/Text";
+import ParagraphsContainer from "../components/ParagraphsContainer/ParagraphsContainer";
 import Button from "../components/Button/Button";
 import Container from "../components/Container/Container";
 import Team from "../components/Team/Team";
@@ -15,7 +15,7 @@ const HomeContent = () => {
   return (
     <div>
       <div className="bg-black w-full p-3 z-20 relative border border-white rounded">
-        <Text paragraphs={HOME_PARAGRAPHS}></Text>
+        <ParagraphsContainer paragraphs={HOME_PARAGRAPHS} />
         <div className="w-full mt-6 text-center">
           <Button className="">
             <Link to={ROUTES.MIRROR.path}>{ROUTES.MIRROR.name}</Link>

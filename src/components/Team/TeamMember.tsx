@@ -3,13 +3,17 @@ import React from "react";
 interface IProps {
   profilePic: any
   name: string;
-  github: String,
-  linkedin: String,
-  twitter: String,
-  email: String
+  github: string,
+  linkedin: string,
+  twitter: string,
+  email: string
 };
 
-const TeamMember: React.FC<IProps> = ({ profilePic, name, github, linkedin, twitter, email}) => {
+const CustomAnchor: React.FC<React.AnchorHTMLAttributes<HTMLAnchorElement>> = (props) => {
+  return <a className="underline" target="_blank" {...props}>{props.children}</a>
+};
+
+const TeamMember: React.FC<IProps> = ({ profilePic, name, github, linkedin, twitter, email }) => {
   return (
     <div className="flex flex-col lg:flex-row lg:justify-start items-center relative z-20 my-3">
       <img
@@ -19,10 +23,10 @@ const TeamMember: React.FC<IProps> = ({ profilePic, name, github, linkedin, twit
       />
       <div className="text-center lg:text-left">
         <h2 className="font-bold text-xl">{name}</h2>
-        <h2 className="text-xl">Github: {github}</h2>
-        <h2 className="text-xl">LinkedIn: {linkedin}</h2>
-        <h2 className="text-xl">Twitter: {twitter}</h2>
-        <h2 className="text-xl">email: {email}</h2>
+        <h2 className="text-xl">Github: <CustomAnchor href={`https://github.com/${github}`}>{github}</CustomAnchor></h2>
+        <h2 className="text-xl">LinkedIn: <CustomAnchor href={`https://linkedin.com/in/${linkedin}`}>{name}</CustomAnchor></h2>
+        <h2 className="text-xl">Twitter: <CustomAnchor href={`https://twitter.com/${twitter}`}>@{twitter}</CustomAnchor></h2>
+        <h2 className="text-xl">email: <CustomAnchor href={`mailto:${email}`}>{email}</CustomAnchor></h2>
       </div>
     </div>
   );
