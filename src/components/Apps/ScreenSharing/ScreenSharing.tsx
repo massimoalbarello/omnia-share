@@ -11,10 +11,10 @@ const Mirror = () => {
       <ParagraphsContainer paragraphs={MIRROR_PARAGRAPHS} />
       <div className="w-full my-8 flex flex-row justify-evenly">
         <Button className="font-bold">
-          <Link to={ROUTES.MIRROR_SENDER.path}>{ROUTES.MIRROR_SENDER.name}</Link>
+          <Link to={ROUTES.SCREEN_SHARING_SENDER.path}>{ROUTES.SCREEN_SHARING_SENDER.name}</Link>
         </Button>
         <Button className="font-bold">
-          <Link to={ROUTES.MIRROR_RECEIVER.path}>{ROUTES.MIRROR_RECEIVER.name}</Link>
+          <Link to={ROUTES.SCREEN_SHARING_RECEIVER.path}>{ROUTES.SCREEN_SHARING_RECEIVER.name}</Link>
         </Button>
       </div>
     </div>

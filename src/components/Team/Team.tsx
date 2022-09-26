@@ -16,7 +16,6 @@ const Team = () => {
           github="massimoalbarello"
           linkedin="massimo-albarello-62b3a714a"
           twitter="MaxAlbarello"
-          email="massimo00albarello@gmail.com"
         />
         <TeamMember
           profilePic={profile_luca}
@@ -24,7 +23,6 @@ const Team = () => {
           github="Luca8991"
           linkedin="luca-bertelli-407041128"
           twitter="ilbert_luca"
-          email="luca.berte98@hotmail.it"
         />
       </div>
     </div>

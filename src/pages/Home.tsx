@@ -1,5 +1,5 @@
-import { Link, Route, Routes } from "react-router-dom";
-import Mirror from "../components/Apps/Mirror/Mirror";
+import { Link, Navigate, Route, Routes } from "react-router-dom";
+import ScreenSharing from "../components/Apps/ScreenSharing/ScreenSharing";
 import ParagraphsContainer from "../components/ParagraphsContainer/ParagraphsContainer";
 import Button from "../components/Button/Button";
 import Container from "../components/Container/Container";
@@ -18,7 +18,7 @@ const HomeContent = () => {
         <ParagraphsContainer paragraphs={HOME_PARAGRAPHS} />
         <div className="w-full mt-6 text-center">
           <Button className="">
-            <Link to={ROUTES.MIRROR.path}>{ROUTES.MIRROR.name}</Link>
+            <Link to={ROUTES.SCREEN_SHARING.path}>{ROUTES.SCREEN_SHARING.name}</Link>
           </Button>
         </div>
       </div>
@@ -38,12 +38,12 @@ const HomePage = () => {
         {/* TODO: implement apps page */}
         {/* <Route path={ROUTES.APPS.path} element={<Apps />} /> */}
         <Route path={ROUTES.TEAM.path} element={<Team />} />
-        <Route path={ROUTES.MIRROR.path} element={<Mirror />} />
+        <Route path={ROUTES.SCREEN_SHARING.path} element={<ScreenSharing />} />
         <Route
-          path={ROUTES.MIRROR_WITH_RECEIVER_ID.path}
-          element={<Mirror />}
+          path={`${ROUTES.SCREEN_SHARING_SENDER.path}/:id`}
+          element={<Navigate to={ROUTES.HOME.path} replace />}
         />
-        <Route path={ROUTES.MIRROR_SENDER.path} element={<SenderPage />} />
+        <Route path={ROUTES.SCREEN_SHARING_SENDER.path} element={<SenderPage />} />
       </Routes>
     </Container>
   );

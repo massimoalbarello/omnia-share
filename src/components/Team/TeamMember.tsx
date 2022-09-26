@@ -6,14 +6,13 @@ interface IProps {
   github: string,
   linkedin: string,
   twitter: string,
-  email: string
 };
 
 const CustomAnchor: React.FC<React.AnchorHTMLAttributes<HTMLAnchorElement>> = (props) => {
   return <a className="underline" target="_blank" {...props}>{props.children}</a>
 };
 
-const TeamMember: React.FC<IProps> = ({ profilePic, name, github, linkedin, twitter, email }) => {
+const TeamMember: React.FC<IProps> = ({ profilePic, name, github, linkedin, twitter }) => {
   return (
     <div className="flex flex-col lg:flex-row lg:justify-start items-center relative z-20 my-3">
       <img
@@ -26,7 +25,6 @@ const TeamMember: React.FC<IProps> = ({ profilePic, name, github, linkedin, twit
         <h2 className="text-xl">Github: <CustomAnchor href={`https://github.com/${github}`}>{github}</CustomAnchor></h2>
         <h2 className="text-xl">LinkedIn: <CustomAnchor href={`https://linkedin.com/in/${linkedin}`}>{name}</CustomAnchor></h2>
         <h2 className="text-xl">Twitter: <CustomAnchor href={`https://twitter.com/${twitter}`}>@{twitter}</CustomAnchor></h2>
-        <h2 className="text-xl">email: <CustomAnchor href={`mailto:${email}`}>{email}</CustomAnchor></h2>
       </div>
     </div>
   );

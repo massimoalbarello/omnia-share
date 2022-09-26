@@ -4,7 +4,7 @@ import { Peer, DataConnection, MediaConnection } from "peerjs";
 import { QRCodeCanvas } from "qrcode.react";
 import Container from "../components/Container/Container";
 import { useQueryParams } from "../hooks/useQueryParams";
-import { PATH_REDIRECTION_ON_PHONE_SCAN } from "../constants/routes";
+import { ROUTES } from "../constants/routes";
 
 const ReceiverPage = () => {
   const [receiverPeer, setReceiverPeer] = useState<Peer>(new Peer());
@@ -132,9 +132,7 @@ const ReceiverPage = () => {
           <div className="w-full mx-auto mt-3 bg-white text-black p-6 rounded">
             <QRCodeCanvas
               value={
-                "https://omnia-iot.com/#" +
-                PATH_REDIRECTION_ON_PHONE_SCAN +
-                receiverPeer.id
+                `https://omnia-iot.com/#${ROUTES.SCREEN_SHARING_SENDER.path}/${receiverPeer.id}`
               }
               size={qrSize}
               className="mx-auto"

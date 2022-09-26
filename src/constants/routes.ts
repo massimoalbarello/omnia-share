@@ -1,5 +1,3 @@
-export const PATH_REDIRECTION_ON_PHONE_SCAN = '/mirror/receiverId/';
-
 export const ROUTES = {
   HOME: {
     path: '/',
@@ -13,20 +11,16 @@ export const ROUTES = {
     path: '/team',
     name: 'Team',
   },
-  MIRROR: {
-    path: '/mirror',
-    name: 'Mirror',
+  SCREEN_SHARING: {
+    path: '/screen-sharing',
+    name: 'Screen Sharing',
   },
-  MIRROR_WITH_RECEIVER_ID: {
-    path: PATH_REDIRECTION_ON_PHONE_SCAN + '*',
-    name: 'Mirror'
-  },
-  MIRROR_SENDER: {
-    path: '/mirror/sender',
+  SCREEN_SHARING_SENDER: {
+    path: '/screen-sharing/sender',
     name: 'Sender',
   },
-  MIRROR_RECEIVER: {
-    path: '/mirror/receiver',
+  SCREEN_SHARING_RECEIVER: {
+    path: '/screen-sharing/receiver',
     name: 'Receiver',
   },
 };

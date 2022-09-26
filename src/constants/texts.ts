@@ -3,3 +3,12 @@ export const HOME_PARAGRAPHS = ["Whenever you are online it feels like you have 
 export const MIRROR_PARAGRAPHS = ["This app enables you to share the screen of your computer on any other display simply by scanning a QR code.", "In order to do this, open the “Receiver” page on the display you want to share the screen on. Then, on your computer open the “Sender” page and scan the QR code using the built in scanner. After you select which window you want to share, the display should automatically show it.", "This can be useful when you have to use a bigger screen or projector to show the slides for a presentation or when you simply want to watch a movie."];
 
 export const TEAM_PARAGRAPH = ["We are a team of two students who are passionate about technology and innovation. We love building things and have already worked together on multiple projects. We are always open for an interesting conversation, do not hesitate to contact us :)"];
+
+export const SENDER_MOBILE_ERROR = [
+  "You can only share your screen from a desktop computer :(",
+  "Please, open this page on your PC.",
+];
+
+export const SENDER_SAFARI_WARNING = [
+  "Make sure Safari can access your camera and screen capture.",
+];

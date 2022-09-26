@@ -1,8 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 import { Peer, DataConnection, MediaConnection } from "peerjs";
 import QrReader from "react-qr-scanner";
+import { isMobile, isSafari } from 'react-device-detect';
 import Button from "../components/Button/Button";
-import { PATH_REDIRECTION_ON_PHONE_SCAN } from "../constants/routes";
+import { ROUTES } from "../constants/routes";
+import ParagraphsContainer from "../components/ParagraphsContainer/ParagraphsContainer";
+import { SENDER_MOBILE_ERROR, SENDER_SAFARI_WARNING } from "../constants/texts";
 
 const SenderPage = () => {
   const [senderPeer, setSenderPeer] = useState<Peer>(new Peer());
@@ -77,11 +80,17 @@ const SenderPage = () => {
   const handleScan = useCallback(
     async (res: { text: string }) => {
       if (res && !isScanCompleted) {
-        const pathOffset = PATH_REDIRECTION_ON_PHONE_SCAN.length;
-        const receiverIdStartIndex =
-          res.text.indexOf(PATH_REDIRECTION_ON_PHONE_SCAN) + pathOffset;
-        const remotePeerId: string = res.text.slice(receiverIdStartIndex);
+
+        const pathPieces = res.text.split(ROUTES.SCREEN_SHARING_SENDER.path + '/');
+
+        if (!pathPieces[1]) {
+          console.log('QR code is invalid: no receiver id found');
+          return;
+        }
+
+        const remotePeerId = pathPieces[1];
         console.log("Peer receiver id: ", remotePeerId);
+
         setIsScanCompleted(true);
 
         initDataConnection(remotePeerId);
@@ -136,6 +145,14 @@ const SenderPage = () => {
     });
   }, [senderPeer, backToHomePage]);
 
+  if (isMobile) {
+    return (
+      <div className="text-center relative p-3 z-20 bg-black border border-white rounded pb-9">
+        <ParagraphsContainer paragraphs={SENDER_MOBILE_ERROR} />
+      </div>
+    );
+  }
+
   return (
     <div className="text-center relative p-3 z-20 bg-black border border-white rounded">
       <h1 className="text-2xl font-bold">Sender</h1>
@@ -164,6 +181,7 @@ const SenderPage = () => {
           <Button className="mt-3" onClick={toggleScanner}>
             {isScannerEnabled ? "Stop scanner" : "Scan receiver QR code"}
           </Button>
+          {isSafari && <ParagraphsContainer paragraphs={SENDER_SAFARI_WARNING} />}
         </div>
       )}
     </div>

@@ -14,7 +14,7 @@ const App = () => {
     <HashRouter>
       <Routes>
         <Route path="/*" element={<HomePage />} />
-        <Route path={ROUTES.MIRROR_RECEIVER.path} element={<ReceiverPage />} />
+        <Route path={ROUTES.SCREEN_SHARING_RECEIVER.path} element={<ReceiverPage />} />
       </Routes>
     </HashRouter>
   );
