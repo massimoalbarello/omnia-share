@@ -1,4 +1,4 @@
-import { Link, Navigate, Route, Routes } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
 import ScreenSharing from "../components/Apps/ScreenSharing/ScreenSharing";
 import ParagraphsContainer from "../components/ParagraphsContainer/ParagraphsContainer";
 import Button from "../components/Button/Button";
@@ -8,6 +8,7 @@ import { ROUTES } from "../constants/routes";
 import { HOME_PARAGRAPHS } from "../constants/texts";
 import { getCommit, getVersion } from "../utils/utils";
 import SenderPage from "./Sender";
+import SenderRedirect from "./SenderRedirect";
 
 import "./Home.css";
 
@@ -41,7 +42,7 @@ const HomePage = () => {
         <Route path={ROUTES.SCREEN_SHARING.path} element={<ScreenSharing />} />
         <Route
           path={`${ROUTES.SCREEN_SHARING_SENDER.path}/:id`}
-          element={<Navigate to={ROUTES.HOME.path} replace />}
+          element={<SenderRedirect />}
         />
         <Route path={ROUTES.SCREEN_SHARING_SENDER.path} element={<SenderPage />} />
       </Routes>

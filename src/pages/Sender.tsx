@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Peer, DataConnection, MediaConnection } from "peerjs";
 import QrReader from "react-qr-scanner";
 import { isMobile, isSafari } from 'react-device-detect';
+import ReactGA from "react-ga4";
 import Button from "../components/Button/Button";
 import { ROUTES } from "../constants/routes";
 import ParagraphsContainer from "../components/ParagraphsContainer/ParagraphsContainer";
@@ -93,6 +94,9 @@ const SenderPage = () => {
 
         setIsScanCompleted(true);
 
+        // log analytics
+        ReactGA.event('scan_completed');
+
         initDataConnection(remotePeerId);
 
         await initMediaConnection(remotePeerId);
@@ -114,6 +118,14 @@ const SenderPage = () => {
   };
 
   const toggleScanner = () => {
+    if (!isScannerEnabled) {
+      // log analytics
+      ReactGA.event('scan_started');
+    } else {
+      // log analytics
+      ReactGA.event('scan_stopped');
+    }
+
     setIsScannerEnabled((prev) => !prev);
   };
 

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-
+import ReactGA from "react-ga4";
 import { Peer, DataConnection, MediaConnection } from "peerjs";
 import { QRCodeCanvas } from "qrcode.react";
 import Container from "../components/Container/Container";
@@ -51,6 +51,10 @@ const ReceiverPage = () => {
 
       mediaConnection.on("stream", (remoteStream) => {
         console.log("Received remote stream");
+
+        // log analytics
+        ReactGA.event('stream_received');
+
         if (videoRef?.current) {
           videoRef.current.srcObject = remoteStream;
         }
